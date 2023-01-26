@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using PlayerCast.Helpers;
 
 namespace PlayerCast.Services.Rest
@@ -35,6 +37,11 @@ namespace PlayerCast.Services.Rest
 
                 result.Code = (int)response.StatusCode;
                 result.IsSuccess = result.Code == 200;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result.SuccessResult = JsonSerializer.Deserialize<TSuccess>(responseString);
+                }
             }
 
             return result;
